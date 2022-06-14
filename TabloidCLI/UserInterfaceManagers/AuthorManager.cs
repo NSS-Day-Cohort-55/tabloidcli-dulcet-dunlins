@@ -32,7 +32,11 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
-                    List();
+                    List<Author> authorList = _authorRepository.GetAll();
+                    foreach(Author a in authorList)
+                    {
+                        Console.WriteLine($"{a.FirstName} {a.LastName}");
+                    }
                     return this;
                 case "2":
                     Author author = Choose();
