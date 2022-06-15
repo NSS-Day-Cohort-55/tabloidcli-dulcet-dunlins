@@ -24,15 +24,7 @@ namespace TabloidCLI.Repositories
 
         public List<Blog> GetAll()
        {
-            using (SqlConnection conn = Connection)
-            {
-                conn.Open();
-              using (SqlCommand cmd = conn.CreateCommand())
-               {
-                  cmd.CommandText = @"";
-                }
-                return GetAll();
-           }
+            throw new NotImplementedException();
         }
 
         public void Insert(Blog blog)
