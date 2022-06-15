@@ -77,7 +77,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("Url of Post");
             post.Url = Console.ReadLine();
 
-            Console.WriteLine("Publish Date was executed.");
+            
             post.PublishDateTime =  DateTime.Now;
 
             Console.WriteLine("Enter Your AuthorId");
