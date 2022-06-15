@@ -47,7 +47,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("Please enter journal title: ");
             journalObject.Title = Console.ReadLine();
 
-            Console.WriteLine("Please enter journal content: ");
+            Console.Write("Please enter journal content: ");
             journalObject.Content = Console.ReadLine();
 
             journalObject.CreateDateTime = DateTime.Now;
