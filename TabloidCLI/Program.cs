@@ -21,7 +21,7 @@ namespace TabloidCLI
                     Console.WriteLine("Hello! have a pleasant day");
                     Console.WriteLine("--------------------------");
                     Console.WriteLine(@"Lets put some color in your console.
-1 - Black
+1 - Gray
 2 - Blue
 3 - Red
 4 - Yellow");
@@ -30,7 +30,7 @@ namespace TabloidCLI
                     switch (numForBackground)
                     {
                         case "1":
-                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.BackgroundColor = ConsoleColor.DarkGray;
                             Console.Clear();
                             break;
 
