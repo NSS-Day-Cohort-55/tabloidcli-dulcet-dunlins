@@ -87,10 +87,9 @@ namespace TabloidCLI.Repositories
                                                Url = @url
                                          WHERE id = @id";
 
-                    cmd.Parameters.AddWithValue("@firstName", author.FirstName);
-                    cmd.Parameters.AddWithValue("@lastName", author.LastName);
-                    cmd.Parameters.AddWithValue("@bio", author.Bio);
-                    cmd.Parameters.AddWithValue("@id", author.Id);
+                    cmd.Parameters.AddWithValue("@title", blog.Title);
+                    cmd.Parameters.AddWithValue("@url", blog.Url);
+                    cmd.Parameters.AddWithValue("@id", blog.Id);
 
                     cmd.ExecuteNonQuery();
                 }
