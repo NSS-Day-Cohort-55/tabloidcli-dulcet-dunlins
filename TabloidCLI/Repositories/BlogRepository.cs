@@ -14,7 +14,7 @@ namespace TabloidCLI.Repositories
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+           throw new NotImplementedException();
         }
 
         public Blog Get(int id)
@@ -23,8 +23,35 @@ namespace TabloidCLI.Repositories
         }
 
         public List<Blog> GetAll()
-       {
-            throw new NotImplementedException();
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT 
+                                        Id, Title, Url
+                                       From Blog";
+
+                    List<Blog> blogs = new List<Blog>();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Blog blog = new Blog()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Url = reader.GetString(reader.GetOrdinal("URL")),
+                            
+                        };
+                        blogs.Add(blog);
+
+                    }
+                    reader.Close();
+                    return blogs;
+                }
+            }
         }
 
         public void Insert(Blog blog)
