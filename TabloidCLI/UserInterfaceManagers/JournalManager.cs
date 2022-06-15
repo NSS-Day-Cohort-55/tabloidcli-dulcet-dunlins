@@ -23,6 +23,7 @@ namespace TabloidCLI.UserInterfaceManagers
         public IUserInterfaceManager Execute()
         {
             Console.WriteLine("Journal Menu");
+            Console.WriteLine(" 2) List Journal Entries");
             Console.WriteLine(" 1) Add Journal Entry");
             Console.WriteLine(" 0) Go Back");
 
@@ -30,6 +31,13 @@ namespace TabloidCLI.UserInterfaceManagers
             string choice = Console.ReadLine();
             switch (choice)
             {
+                case "2":
+                    List<Journal> allEntries = _journalRepository.GetAll();
+                    foreach(Journal journal in allEntries)
+                    {
+                        Console.WriteLine($"{journal.Title}{journal.Content} {journal.CreateDateTime}");
+                    }
+                    return this;
                 case "1":
                     Add();
                     return this;
