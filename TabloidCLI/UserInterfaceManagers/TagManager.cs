@@ -9,6 +9,7 @@ namespace TabloidCLI.UserInterfaceManagers
         public TagManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
+           
         }
 
         public IUserInterfaceManager Execute()
