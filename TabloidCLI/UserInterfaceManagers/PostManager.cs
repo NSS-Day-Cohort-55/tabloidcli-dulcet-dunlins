@@ -8,14 +8,14 @@ using TabloidCLI.Repositories;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
-     public class PostManager : IUserInterfaceManager
+    public class PostManager : IUserInterfaceManager
 
     {
-           private readonly IUserInterfaceManager _parentUI;
-           private string _connectionString;
-           private PostRepository _postRepository;
-           private AuthorRepository _authorRepository;
-           private BlogRepository _blogRepository;
+        private readonly IUserInterfaceManager _parentUI;
+        private string _connectionString;
+        private PostRepository _postRepository;
+        private AuthorRepository _authorRepository;
+        private BlogRepository _blogRepository;
 
 
         public PostManager(IUserInterfaceManager parentUI, string connectionString)
@@ -42,19 +42,19 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
-                   // List();
+                    List();
                     return this;
                 case "2":
                     Add();
                     return this;
                 case "3":
-                   // Edit()
+                    // Edit()
                     return this;
                 case "4":
-                   // Remove();
+                    // Remove();
                     return this;
                 case "5":
-                   //  Note management();
+                    //  Note management();
                     return this;
                 case "0":
                     return _parentUI;
@@ -65,20 +65,20 @@ namespace TabloidCLI.UserInterfaceManagers
 
         }
 
-        private void Add ()
+        private void Add()
         {
             Console.WriteLine("New Post");
 
             Post post = new Post();
-            
+
             Console.WriteLine("Title of Post");
             post.Title = Console.ReadLine();
 
             Console.WriteLine("Url of Post");
             post.Url = Console.ReadLine();
 
-            
-            post.PublishDateTime =  DateTime.Now;
+
+            post.PublishDateTime = DateTime.Now;
 
             Console.WriteLine("Enter Your AuthorId");
             List<Author> authors = _authorRepository.GetAll();
@@ -87,20 +87,29 @@ namespace TabloidCLI.UserInterfaceManagers
                 Console.WriteLine($"Author's name: {author.FirstName}, Id: {author.Id}");
             }
             Console.WriteLine("Choose one");
-            post.Author = new Author { Id =  int.Parse(Console.ReadLine())}; 
-          
+            post.Author = new Author { Id = int.Parse(Console.ReadLine()) };
+
 
             Console.WriteLine("Enter BlogId");
-            List<Blog> blogs =  _blogRepository.GetAll();
+            List<Blog> blogs = _blogRepository.GetAll();
             foreach (Blog blog in blogs)
             {
                 Console.WriteLine($"Blog's title is {blog.Title}, Id # {blog.Id}");
             }
-            post.Blog = new Blog { Id = int.Parse(Console.ReadLine())};
+            post.Blog = new Blog { Id = int.Parse(Console.ReadLine()) };
 
-             _postRepository.Insert(post);
-           
-           
+            _postRepository.Insert(post);
+
+
+        }
+
+        public void List()
+        {
+            List<Post> allPosts = _postRepository.GetAll();
+            foreach(Post post in allPosts)
+            {
+                Console.WriteLine($"{post.Title} ({post.Url})");
+            }
         }
 
 
