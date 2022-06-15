@@ -112,7 +112,7 @@ namespace TabloidCLI.Repositories
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
-                using(SqlCommand cmd = conn.CreateCommand())
+                using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"INSERT INTO POST (Title, Url, PublishDateTime, AuthorId, BlogId)
                                        OUTPUT INSERTED.Id 
@@ -121,7 +121,7 @@ namespace TabloidCLI.Repositories
                     cmd.Parameters.AddWithValue("@url", post.Url);
                     cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
                     cmd.Parameters.AddWithValue("@authorId", post.Author.Id);
-                    cmd.Parameters.AddWithValue("@blogId" , post.Blog.Id);
+                    cmd.Parameters.AddWithValue("@blogId", post.Blog.Id);
                     int id = (int)cmd.ExecuteScalar();
 
                     post.Id = id;
