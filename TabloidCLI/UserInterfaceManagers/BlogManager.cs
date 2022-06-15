@@ -77,7 +77,25 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            List<Blog> blogs = _blogRepository.GetAll();
+            foreach (Blog blog in blogs)
+            {
+                Console.WriteLine($"{blog.Id} - {blog.Title}, {blog.Url}");
+            }
+            Console.WriteLine("Which one would you like to update?");
+            int blogIdToUpdate = int.Parse(Console.ReadLine());
+            Console.WriteLine("What would you like the new title to be?");
+            string blogTitle = Console.ReadLine();
+            Console.WriteLine("What would you like the new url to be?");
+            string blogUrl = Console.ReadLine();
+            Blog updatedBlogOBj = new Blog()
+            {
+                Id = blogIdToUpdate,
+                Title = blogTitle,
+                Url = blogUrl   
+            };
+            _blogRepository.Update(updatedBlogOBj);
+            Console.WriteLine("Your blog has been updated.");
         }
 
         private void Remove()
