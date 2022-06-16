@@ -16,7 +16,7 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT Title, URL, PublishDateTime, AuthorId, BlogId
+                    cmd.CommandText = @"SELECT Id,Title, URL, PublishDateTime, AuthorId, BlogId
                                         FROM Post;";
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -25,6 +25,7 @@ namespace TabloidCLI.Repositories
                         {
                             allPosts.Add(new Post()
                             {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
                                 Title = reader.GetString(reader.GetOrdinal("Title")),
                                 Url = reader.GetString(reader.GetOrdinal("URL")),
                                 PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDateTime")),
@@ -36,7 +37,7 @@ namespace TabloidCLI.Repositories
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("BlogId"))
                                 }
-                            });
+                            }); ;
                         }
                         return allPosts;
                     }
@@ -46,8 +47,49 @@ namespace TabloidCLI.Repositories
 
         public Post Get(int id)
         {
-            throw new NotImplementedException();
-        }
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT *
+                                          FROM Post 
+                                         WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    Post post = null;
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        if (post == null)
+                        {
+                            post = new Post()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Title = reader.GetString(reader.GetOrdinal("Title")),
+                                Url = reader.GetString(reader.GetOrdinal("Url")),
+                                PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDateTime")),
+                            };
+                        }
+                        //this may be helpful later
+                        //if (!reader.IsDBNull(reader.GetOrdinal("TagId")))
+                        //{
+                        //    author.Tags.Add(new Tag()
+                        //    {
+                        //        Id = reader.GetInt32(reader.GetOrdinal("TagId")),
+                        //        Name = reader.GetString(reader.GetOrdinal("Name")),
+                        //    });
+                        //}
+                    }
+
+                    reader.Close();
+
+                    return post;
+                }
+            }
+            }
 
         public List<Post> GetByAuthor(int authorId)
         {
