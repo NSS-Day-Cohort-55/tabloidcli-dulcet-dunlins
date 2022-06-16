@@ -48,7 +48,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     Add();
                     return this;
                 case "3":
-                    // Edit()
+                    Edit();
                     return this;
                 case "4":
                     Remove();
@@ -152,6 +152,36 @@ namespace TabloidCLI.UserInterfaceManagers
                 _postRepository.Delete
                     (postToDelete.Id);
             }
+        }
+        private void Edit()
+        {
+            Post postToEdit = Choose("Which post would you like to edit?");
+            if (postToEdit == null)
+            {
+                return;
+            }
+
+            Console.WriteLine();
+            Console.Write("New title (blank to leave unchanged: ");
+            string title = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                postToEdit.Title= title;
+            }
+            Console.Write("New url (blank to leave unchanged: ");
+            string url = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                postToEdit.Url = url;
+            }
+            Console.Write("New date time (blank to leave unchanged: ");
+            string publishdatetime = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(publishdatetime))
+            {
+                //postToEdit.PublishDateTime = publishdatetime;
+            }
+
+            _postRepository.Update(postToEdit);
         }
 
     }
