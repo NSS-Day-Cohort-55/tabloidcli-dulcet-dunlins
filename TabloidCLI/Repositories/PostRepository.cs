@@ -37,7 +37,7 @@ namespace TabloidCLI.Repositories
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("BlogId"))
                                 }
-                            });
+                            }); 
                         }
                         return allPosts;
                     }
@@ -47,8 +47,42 @@ namespace TabloidCLI.Repositories
 
         public Post Get(int id)
         {
-            throw new NotImplementedException();
-        }
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT *
+                                          FROM Post 
+                                         WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    Post post = null; 
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if(reader.Read())
+                    {
+                    
+
+                         post = new Post()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Url = reader.GetString(reader.GetOrdinal("Url")),
+                            PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDateTime")),
+                        };
+                    }  
+                    
+                        
+                    
+
+                    reader.Close();
+
+                    return post;
+                }
+            }
+            }
 
         public List<Post> GetByAuthor(int authorId)
         {
