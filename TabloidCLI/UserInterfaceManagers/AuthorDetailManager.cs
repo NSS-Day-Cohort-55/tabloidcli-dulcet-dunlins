@@ -72,9 +72,10 @@ namespace TabloidCLI.UserInterfaceManagers
         private void ViewBlogPosts()
         {
             List<Post> posts = _postRepository.GetByAuthor(_authorId);
+            Console.WriteLine();
             foreach (Post post in posts)
             {
-                Console.WriteLine(post);
+                Console.WriteLine($"({post.Blog.Title}) {post.Title}");
             }
             Console.WriteLine();
         }
@@ -100,7 +101,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 Tag tag = tags[choice - 1];
                 _authorRepository.InsertTag(author, tag);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine("Invalid Selection. Won't add any tags.");
             }
@@ -127,7 +128,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 Tag tag = tags[choice - 1];
                 _authorRepository.DeleteTag(author.Id, tag.Id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine("Invalid Selection. Won't remove any tags.");
             }
