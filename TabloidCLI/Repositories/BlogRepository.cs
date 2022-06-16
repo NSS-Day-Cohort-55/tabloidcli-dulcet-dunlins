@@ -30,7 +30,42 @@ namespace TabloidCLI.Repositories
 
         public Blog Get(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT b.Id AS BlogId,
+b.Title,
+b.Url,
+t.Id AS TagId,
+t.Name
+FROM Blog b
+LEFT JOIN BlogTag bt on b.Id = bt.BlogId
+LEFT JOIN Tag t on t.Id = bt.TagId
+WHERE b.id = @id;";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    Blog blog = null;
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if(reader.Read());
+
+                        blog = new Blog()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("BlogId")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Url = reader.GetString(reader.GetOrdinal("Url")),
+
+                        };
+  
+
+                    reader.Close();
+
+                    return blog;
+                }
+            }
         }
 
         public List<Blog> GetAll()
