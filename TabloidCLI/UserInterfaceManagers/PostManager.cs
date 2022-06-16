@@ -59,10 +59,10 @@ namespace TabloidCLI.UserInterfaceManagers
                     Add();
                     return this;
                 case "4":
-                    // Edit()
+                    Edit();
                     return this;
                 case "5":
-                    // Remove();
+                    Remove();
                     return this;
                 case "6":
                     //  Note management();
@@ -147,11 +147,124 @@ namespace TabloidCLI.UserInterfaceManagers
                 int choice = int.Parse(input);
                 return posts[choice - 1];
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Console.WriteLine("Invalid Selection");
                 return null;
             }
+        }
+
+        private void Remove()
+        {
+            Post postToDelete = Choose("Which post would you like to remove?");
+            if (postToDelete != null)
+            {
+                _postRepository.Delete
+                    (postToDelete.Id);
+            }
+        }
+        private Author ChooseAuthor(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose an Author:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Author> authors = _authorRepository.GetAll();
+
+            for (int i = 0; i < authors.Count; i++)
+            {
+                Author author = authors[i];
+                Console.WriteLine($" {i + 1}) {author.FullName}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return authors[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
+        }
+
+        private Blog ChooseBlog(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose a Blog:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Blog> blogs = _blogRepository.GetAll();
+
+            for (int i = 0; i < blogs.Count; i++)
+            {
+                Blog blog = blogs[i];
+                Console.WriteLine($" {i + 1}) {blog.Title}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return blogs[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
+        }
+        private void Edit()
+        {
+            Post postToEdit = Choose("Which post would you like to edit?");
+            if (postToEdit == null)
+            {
+                return;
+            }
+
+            Console.WriteLine();
+            Console.Write("Edit Post Title (blank to leave unchanged): ");
+            string title = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                postToEdit.Title = title;
+            }
+            Console.Write("Edit Post Url (blank to leave unchanged): ");
+            string url = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                postToEdit.Url = url;
+            }
+            Console.Write("Edit Publish DateTime (blank to leave unchanged): ");
+            DateTime userDateTime = postToEdit.PublishDateTime;
+            DateTime.TryParse(Console.ReadLine(), out userDateTime);
+
+            if (userDateTime != postToEdit.PublishDateTime && userDateTime != DateTime.MinValue)
+            {
+                postToEdit.PublishDateTime = userDateTime;
+            }
+            else if (postToEdit.PublishDateTime == DateTime.MinValue)
+            {
+                postToEdit.PublishDateTime = DateTime.Now;
+            }
+
+            Author chosenAuthor = ChooseAuthor();
+            postToEdit.Author = chosenAuthor;
+
+            Blog chosenBlog = ChooseBlog();
+            postToEdit.Blog = chosenBlog;
+
+            _postRepository.Update(postToEdit);
         }
 
     }
