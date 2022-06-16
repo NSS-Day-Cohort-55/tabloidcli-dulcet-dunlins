@@ -16,7 +16,7 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT Title, URL, PublishDateTime, AuthorId, BlogId
+                    cmd.CommandText = @"SELECT Id, Title, URL, PublishDateTime, AuthorId, BlogId
                                         FROM Post;";
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -25,6 +25,7 @@ namespace TabloidCLI.Repositories
                         {
                             allPosts.Add(new Post()
                             {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
                                 Title = reader.GetString(reader.GetOrdinal("Title")),
                                 Url = reader.GetString(reader.GetOrdinal("URL")),
                                 PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDateTime")),
@@ -142,7 +143,7 @@ namespace TabloidCLI.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"DELETE FROM Post 
-                                        WHERE id = @id";
+                                        WHERE Id = @id";
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.ExecuteNonQuery();
                 }
