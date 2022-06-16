@@ -153,6 +153,67 @@ namespace TabloidCLI.UserInterfaceManagers
                     (postToDelete.Id);
             }
         }
+        private Author ChooseAuthor(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose an Author:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Author> authors = _authorRepository.GetAll();
+
+            for (int i = 0; i < authors.Count; i++)
+            {
+                Author author = authors[i];
+                Console.WriteLine($" {i + 1}) {author.FullName}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return authors[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
+        }
+
+        private Blog ChooseBlog(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose a Blog:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Blog> blogs = _blogRepository.GetAll();
+
+            for (int i = 0; i < blogs.Count; i++)
+            {
+                Blog blog = blogs[i];
+                Console.WriteLine($" {i + 1}) {blog.Title}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return blogs[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
+        }
         private void Edit()
         {
             Post postToEdit = Choose("Which post would you like to edit?");
@@ -162,24 +223,36 @@ namespace TabloidCLI.UserInterfaceManagers
             }
 
             Console.WriteLine();
-            Console.Write("New title (blank to leave unchanged: ");
+            Console.Write("Edit Post Title (blank to leave unchanged): ");
             string title = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(title))
             {
-                postToEdit.Title= title;
+                postToEdit.Title = title;
             }
-            Console.Write("New url (blank to leave unchanged: ");
+            Console.Write("Edit Post Url (blank to leave unchanged): ");
             string url = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(url))
             {
                 postToEdit.Url = url;
             }
-            Console.Write("New date time (blank to leave unchanged: ");
-            string publishdatetime = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(publishdatetime))
+            Console.Write("Edit Publish DateTime (blank to leave unchanged): ");
+            DateTime userDateTime = postToEdit.PublishDateTime;
+            DateTime.TryParse(Console.ReadLine(), out userDateTime);
+
+            if (userDateTime != postToEdit.PublishDateTime && userDateTime != DateTime.MinValue)
             {
-                //postToEdit.PublishDateTime = publishdatetime;
+                postToEdit.PublishDateTime = userDateTime;
             }
+            else if (postToEdit.PublishDateTime == DateTime.MinValue)
+            {
+                postToEdit.PublishDateTime = DateTime.Now;
+            }
+
+            Author chosenAuthor = ChooseAuthor();
+            postToEdit.Author = chosenAuthor;
+
+            Blog chosenBlog = ChooseBlog();
+            postToEdit.Blog = chosenBlog;
 
             _postRepository.Update(postToEdit);
         }
