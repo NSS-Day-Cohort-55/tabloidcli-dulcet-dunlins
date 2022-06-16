@@ -100,17 +100,16 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"{tag.Id} - {tag.Name}");
             }
-            Console.WriteLine("Which tag would you like to remove? If you dont want to delete any tags just press enter.");
-            string tagToDelete = Console.ReadLine();
-            if(string.IsNullOrEmpty(tagToDelete))
+            Console.WriteLine("Which tag # would you like to remove? If you dont want to delete any tags just press enter.");
+            try 
             {
-                Console.WriteLine("Nothing has been deleted.");
-            }
-            else
-            {
-                int tagId = int.Parse(tagToDelete);
-                _tagRepository.Delete(tagId);
+                int tagToDelete = int.Parse(Console.ReadLine());
+                _tagRepository.Delete(tagToDelete);
                 Console.WriteLine("Your tag has been deleted.");
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid tag id. Nothing was deleted.");
             }
             
 
