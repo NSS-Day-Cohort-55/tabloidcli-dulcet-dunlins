@@ -58,31 +58,24 @@ namespace TabloidCLI.Repositories
 
                     cmd.Parameters.AddWithValue("@id", id);
 
-                    Post post = null;
+                    Post post = null; 
 
                     SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    if(reader.Read())
                     {
-                        if (post == null)
+                    
+
+                         post = new Post()
                         {
-                            post = new Post()
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                                Title = reader.GetString(reader.GetOrdinal("Title")),
-                                Url = reader.GetString(reader.GetOrdinal("Url")),
-                                PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDateTime")),
-                            };
-                        }
-                        //this may be helpful later
-                        //if (!reader.IsDBNull(reader.GetOrdinal("TagId")))
-                        //{
-                        //    author.Tags.Add(new Tag()
-                        //    {
-                        //        Id = reader.GetInt32(reader.GetOrdinal("TagId")),
-                        //        Name = reader.GetString(reader.GetOrdinal("Name")),
-                        //    });
-                        //}
-                    }
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Url = reader.GetString(reader.GetOrdinal("Url")),
+                            PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDateTime")),
+                        };
+                    }  
+                    
+                        
+                    
 
                     reader.Close();
 
