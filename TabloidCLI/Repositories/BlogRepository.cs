@@ -39,28 +39,24 @@ WHERE b.id = @id;";
                     Blog blog = null;
 
                     SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    try 
                     {
-                        if (blog == null)
-                        {
-                            blog = new Blog()
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("BlogId")),
-                                Title = reader.GetString(reader.GetOrdinal("Title")),
-                                Url = reader.GetString(reader.GetOrdinal("Url")),
-                               
-                            };
-                        }
+                        reader.Read();
 
-                        if (!reader.IsDBNull(reader.GetOrdinal("TagId")))
+                        blog = new Blog()
                         {
-                            blog.Tags.Add(new Tag()
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("TagId")),
-                                Name = reader.GetString(reader.GetOrdinal("Name")),
-                            });
-                        }
+                            Id = reader.GetInt32(reader.GetOrdinal("BlogId")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Url = reader.GetString(reader.GetOrdinal("Url")),
+
+                        };
                     }
+
+                    catch (SqlException)
+                    {
+                        Console.WriteLine("Invalid");
+                    }
+                
 
                     reader.Close();
 
