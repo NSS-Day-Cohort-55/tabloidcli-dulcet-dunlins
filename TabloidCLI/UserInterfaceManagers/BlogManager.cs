@@ -26,6 +26,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 2) Add Blog");
             Console.WriteLine(" 3) Edit Blog");
             Console.WriteLine(" 4) Remove Blog");
+            Console.WriteLine(" 5) View Blog Details");
             Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
@@ -36,6 +37,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     List();
                     return this;
                 case "2":
+
                     Add();
                     return this;
                 case "3":
@@ -44,6 +46,16 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "4":
                     Remove();
                     return this;
+                case "5":
+                    Blog blog = Choose();
+                    if (blog == null)
+                    {
+                        return this;
+                    }
+                    else
+                    {
+                        return new BlogDetailsManager(this, _connectionString, blog.Id);
+                    }
                 case "0":
                     return _parentUI;
                 default:
@@ -80,7 +92,35 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             throw new NotImplementedException();
         }
+
+        private Blog Choose()
+        {
+            int i = 1;
+
+            List<Blog> blogs = _blogRepository.GetAll();
+            foreach (Blog blog in blogs)
+            {
+                Console.WriteLine($"{i++}) Blog's name: {blog.Title}");
+            }
+            Console.WriteLine("Please choose a blog");
+            string response = (Console.ReadLine());
+            try
+            {
+                int input = int.Parse(response);
+                return blogs[input - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Select a valid blog");
+                return null;
+            }
+        }
+
+       
+
+    
+            
+        
+
     }
-
-
 }
