@@ -130,5 +130,7 @@ namespace TabloidCLI
                 }
             }
         }
+
+        public SearchResults<Tag>
     }
 }

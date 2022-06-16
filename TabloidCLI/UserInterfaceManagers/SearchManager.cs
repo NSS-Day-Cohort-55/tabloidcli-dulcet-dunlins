@@ -21,13 +21,14 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 2) Search Authors");
             Console.WriteLine(" 3) Search Posts");
             Console.WriteLine(" 4) Search All");
-            Console.WriteLine(" 0) Go Back");
+            Console.WriteLine(" 0) Return to Main Menu");
 
             Console.Write("> ");
             string choice = Console.ReadLine();
             switch (choice)
             {
                 case "1":
+                    SearchBlogs();
                     return this;
                 case "2":
                     SearchAuthors();
@@ -59,6 +60,14 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 results.Display();
             }
+        }
+
+        private void SearchBlogs()
+        {
+            Console.Write("Please enter a Tag name: ");
+            String userSearch = Console.ReadLine();
+
+            _tagRepository.
         }
     }
 }
