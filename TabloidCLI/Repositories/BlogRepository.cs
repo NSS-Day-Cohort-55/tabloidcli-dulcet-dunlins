@@ -50,9 +50,7 @@ WHERE b.id = @id;";
                     Blog blog = null;
 
                     SqlDataReader reader = cmd.ExecuteReader();
-                    try 
-                    {
-                        reader.Read();
+                    if(reader.Read());
 
                         blog = new Blog()
                         {
@@ -61,13 +59,7 @@ WHERE b.id = @id;";
                             Url = reader.GetString(reader.GetOrdinal("Url")),
 
                         };
-                    }
-
-                    catch (SqlException)
-                    {
-                        Console.WriteLine("Invalid");
-                    }
-                
+  
 
                     reader.Close();
 
