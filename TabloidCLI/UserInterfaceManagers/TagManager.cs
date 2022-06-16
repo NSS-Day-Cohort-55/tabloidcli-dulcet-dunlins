@@ -70,12 +70,49 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            List<Tag> tagList = _tagRepository.GetAll();
+            foreach (Tag tag in tagList)
+            {
+                Console.WriteLine($"{tag.Id}- {tag.Name}");
+            }
+            Console.WriteLine("Which tag would you like to edit?");
+            int tagId = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter the new name. If you wish to not edit the name just press enter.");
+            string newTagName = Console.ReadLine();
+            if (string.IsNullOrEmpty(newTagName))
+            {
+                Console.WriteLine("The tag has not been edited.");
+            }
+            else
+            {
+                Tag editedInfo = new Tag();
+                editedInfo.Name = newTagName;
+                editedInfo.Id = tagId;
+                _tagRepository.Update(editedInfo);
+                Console.WriteLine("The tag was updated.");
+            }
         }
 
         private void Remove()
         {
-            throw new NotImplementedException();
+            List<Tag> tagList = _tagRepository.GetAll();
+            foreach (Tag tag in tagList)
+            {
+                Console.WriteLine($"{tag.Id} - {tag.Name}");
+            }
+            Console.WriteLine("Which tag # would you like to remove? If you dont want to delete any tags just press enter.");
+            try 
+            {
+                int tagToDelete = int.Parse(Console.ReadLine());
+                _tagRepository.Delete(tagToDelete);
+                Console.WriteLine("Your tag has been deleted.");
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid tag id. Nothing was deleted.");
+            }
+            
+
         }
     }
 }
