@@ -14,7 +14,18 @@ namespace TabloidCLI.Repositories
 
         public void Delete(int id)
         {
-           throw new NotImplementedException();
+           using (SqlConnection conn = Connection) 
+            { 
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM Blog 
+                                        WHERE id = @id";
+                    cmd.Parameters.AddWithValue("id", id);  
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public Blog Get(int id)
@@ -120,7 +131,23 @@ WHERE b.id = @id;";
 
         public void Update(Blog blog)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Blog 
+                                           SET Title = @title,
+                                               Url = @url
+                                         WHERE id = @id";
+
+                    cmd.Parameters.AddWithValue("@title", blog.Title);
+                    cmd.Parameters.AddWithValue("@url", blog.Url);
+                    cmd.Parameters.AddWithValue("@id", blog.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 
