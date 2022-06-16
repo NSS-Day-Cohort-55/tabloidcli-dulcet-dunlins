@@ -37,7 +37,7 @@ namespace TabloidCLI.Repositories
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("BlogId"))
                                 }
-                            }); ;
+                            }); 
                         }
                         return allPosts;
                     }
