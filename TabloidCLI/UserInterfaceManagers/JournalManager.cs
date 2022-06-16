@@ -92,7 +92,17 @@ namespace TabloidCLI.UserInterfaceManagers
             journalObject.CreateDateTime = DateTime.Now;
 
             _journalRepository.Insert(journalObject);
-            
+
+        }
+
+        private void Remove()
+        {
+            Journal journalToDelete = Choose("Which journal would you like to remove?");
+          
+            if (journalToDelete != null)
+            {
+                _journalRepository.Delete(journalToDelete.Id);
+            }
         }
 
         public void List()
@@ -122,4 +132,4 @@ namespace TabloidCLI.UserInterfaceManagers
         }
 
     }
-}
+    }
